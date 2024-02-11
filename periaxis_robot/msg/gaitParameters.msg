@@ -1,0 +1,7 @@
+bool arm_liveUpdate
+uint16 cyclePeriod_millis
+float32 traceRadius
+geometry_msgs/Point traceOffset_trans
+geometry_msgs/Quaternion traceOffset_rot
+float32 push_ratio
+float32 step_offsetFactor

@@ -1,0 +1,43 @@
+##Current Ubuntu MATE distribution:
+axis@axis-HPEnvy:~$ lsb_release -a
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 18.04.5 LTS
+Release:	18.04
+Codename:	bionic
+
+##Current ROS distribution
+ROS Melodic Installed
+
+##Check USB port permission:
+ls /dev/tty* -lrt
+
+Should be similar to:
+crw-rw-rw- 1 root dialout 188,  0 Jun  7 10:34 /dev/ttyUSB0
+
+##Change USB port permission:
+sudo chmod a+rw /dev/ttyUSB0
+
+ROS Main Directory: opt/ros/melodic/share
+Command to find package source code (example is for joint_state_publisher): roslocate uri joint_state_publisher
+
+--------ROS Notes--------
+Launching the rvis robot visualiser can be done with the launch file in leriaxis_robot, simply run the below from the workspace directory:
+roslaunch periaxis_robot rviz.launch
+
+Publishing topic from terminal (-1 publishes a single message only):
+rostopic pub -1 /periaxis_robot/legGoalCoord periaxis_robot/legGoalCoord "legNum: 1
+x: 5
+y: 10
+z: 14"
+
+Calling a service:
+rosservice call /dynamixel/get_position "id: 3"
+
+Clean your build by running "catkin_make clean" in the root of workspace.
+If needed for the cleanest rebuild you can also delete the workspace devel and build folders.
+Remake project with "catkin_make" in the root of workspace.
+Resource the terminal lookups by running "source devel/setup.bash" in your workspace
+^ make sure you source the terminal if having problems executing a command or finding a ROS package etc on a recently created package.
+
+Opening ROS GUI: rqt

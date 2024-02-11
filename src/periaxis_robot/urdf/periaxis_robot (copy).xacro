@@ -1,0 +1,105 @@
+<?xml version="1.0" ?>
+
+<robot name="periaxis_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- World origin at centre of circle legs are radialy mounted from -->
+    <link name="world_origin">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="1 1 1"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <!-- fixed offset to leg 1 base; world_frame to base_frame -->
+    <joint name="base_L1_fixedjoint" type="fixed">
+        <origin xyz="0 5 0" rpy="-1.57 0 0"/>
+        <parent link="world_origin"/>
+        <child link="L1_base"/>        
+    </joint>
+
+    <!-- Leg1 servo 1 base fixed base frame -->
+    <link name="L1_base">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 -0.5"/>
+            <geometry>
+                <box size="1 1 1"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <!-- Leg1 servo joint 1; base frame to frame 0 (rotating finger plane) -->
+    <joint name="L1_joint1" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="${-pi}" upper="${pi}" velocity="0.5" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="L1_base"/>
+        <child link="L1_link1"/>
+    </joint>
+
+    <!-- Leg1 servo 1 rotating frame, link 1 (frame 0) -->
+    <link name="L1_link1">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.35" length="0.4"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <!-- Leg1 servo joint 2; frame 0 to frame 1 -->
+    <joint name="L1_joint2" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="${-pi/2}" upper="${pi/2}" velocity="0.5" />
+        <origin xyz="0 0 1" rpy="1.57 0 -1.57" />
+        <parent link="L1_link1"/>
+        <child link="L1_link2"/>
+    </joint>
+
+    <!-- Leg1 servo 2 (frame 1) -->
+    <link name="L1_link2">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.35" length="0.4"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <!-- Leg1 servo joint 3; frame 1 to frame 2 -->
+    <joint name="L1_joint3" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="-3.14" upper="3.14" velocity="0.5" />
+        <origin xyz="0 3 0" rpy="0 0 1.57" />
+        <parent link="L1_link2"/>
+        <child link="L1_link3"/>
+    </joint>
+
+    <!-- Leg1 servo 2 (frame 2) -->
+    <link name="L1_link3">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.35" length="0.4"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <!-- Leg1 servo 3 (frame 3) fixed frame to finger end -->
+    <joint name="L1_fingerFixedJoint" type="fixed">
+        <origin xyz="5 0 0" rpy="0 0 0"/>
+        <parent link="L1_link3"/>
+        <child link="L1_fingerTip"/>        
+    </joint>
+
+    <!-- Leg1 servo 3 (frame 3) -->
+    <link name="L1_fingerTip">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.35" length="0.4"/>
+            </geometry>
+        </visual>
+    </link> 
+
+</robot>

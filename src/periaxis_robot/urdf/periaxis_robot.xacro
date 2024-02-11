@@ -1,0 +1,145 @@
+<?xml version="1.0" ?>
+
+<robot name="periaxis_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:property name="base_radius" value="5" />
+    <xacro:property name="angle_between_legs" value="${(2*pi)/5}" />
+    <xacro:property name="L1" value="1.9" />
+    <xacro:property name="L2" value="9.5" />
+    <xacro:property name="L3" value="14.3" />
+
+    <material name="white">
+    <color rgba="1 1 1 1"/>
+    </material>
+
+    <!-- World origin at centre of circle legs are radialy mounted from -->
+    <link name="world_origin">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 8"/>
+            <geometry>
+                <cylinder radius="8" length="0.01"/>
+            </geometry>
+        </visual>
+    </link>
+
+<!-- macro function for generating each leg -->
+<xacro:macro name="leg" params="prefix legZAngle_rad">
+    
+    <!-- Fixed rotation from world frame to legs angle in circle, z axis now aligned with leg final position -->
+    <joint name="L${prefix}_FixedLegRotation" type="fixed">
+        <origin xyz="0 0 0" rpy="-1.57 0 ${legZAngle_rad}"/>
+        <parent link="world_origin"/>
+        <child link="L${prefix}_legPoition"/>        
+    </joint>
+
+    <!-- Intermediate pseudo link prior to final translation to radius distance -->
+    <link name="L${prefix}_legPoition">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0 0 0"/>>
+            </geometry>
+        </visual>
+    </link>
+
+    <!-- Fixed translation to leg # base; world_frame to base_frame -->
+    <joint name="L${prefix}_FixedLegTranslation" type="fixed">
+        <origin xyz="0 0 ${base_radius}" rpy="0 0 0"/>
+        <parent link="L${prefix}_legPoition"/>
+        <child link="L${prefix}_base"/>        
+    </joint>
+
+    <!-- Leg# servo 1 fixed base frame -->
+    <link name="L${prefix}_base">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 -0.5"/>
+            <geometry>
+                <box size="1 1 1"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <!-- Leg# servo joint 1; base frame to frame 0 (rotating finger plane) -->
+    <joint name="L${prefix}_joint1" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="${-pi}" upper="${pi}" velocity="0.5" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="L${prefix}_base"/>
+        <child link="L${prefix}_link1"/>
+    </joint>
+
+    <!-- Leg# servo 1 rotating frame, link 1 (frame 0) -->
+    <link name="L${prefix}_link1">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 ${L1/2}"/>
+            <geometry>
+                <cylinder radius="0.1" length="${L1}"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <!-- Leg# servo joint 2; frame 0 to frame 1 -->
+    <joint name="L${prefix}_joint2" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="${-pi/2}" upper="${pi/2}" velocity="0.5" />
+        <origin xyz="0 0 ${L1}" rpy="1.57 0 -1.57" />
+        <parent link="L${prefix}_link1"/>
+        <child link="L${prefix}_link2"/>
+    </joint>
+
+    <!-- Leg# servo 2 (frame 1) -->
+    <link name="L${prefix}_link2">
+        <visual>
+            <origin rpy="${-pi/2} 0 0" xyz="0 ${L2/2} 0"/>
+            <geometry>
+                <cylinder radius="0.1" length="${L2}"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <!-- Leg# servo joint 3; frame 1 to frame 2 -->
+    <joint name="L${prefix}_joint3" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="-3.14" upper="3.14" velocity="0.5" />
+        <origin xyz="0 ${L2} 0" rpy="0 0 1.57" />
+        <parent link="L${prefix}_link2"/>
+        <child link="L${prefix}_link3"/>
+    </joint>
+
+    <!-- Leg# servo 2 (frame 2) -->
+    <link name="L${prefix}_link3">
+        <visual>
+            <origin rpy="0 ${-pi/2} 0" xyz="${L3/2} 0 0"/>
+            <geometry>
+                <cylinder radius="0.1" length="${L3}"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <!-- Leg# servo 3 (frame 3) fixed frame to finger end -->
+    <joint name="L${prefix}_fingerFixedJoint" type="fixed">
+        <origin xyz="${L3} 0 0" rpy="0 0 0"/>
+        <parent link="L${prefix}_link3"/>
+        <child link="L${prefix}_fingerTip"/>        
+    </joint>
+
+    <!-- Leg# servo 3 (frame 3) -->
+    <link name="L${prefix}_fingerTip">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <sphere radius="0.3"/>
+            </geometry>
+            <material name="white"/>
+        </visual>
+    </link> 
+
+</xacro:macro>
+
+<!-- Generate actual leg models using macro function above -->
+<xacro:leg prefix="1" legZAngle_rad="0" />
+<xacro:leg prefix="2" legZAngle_rad="-1.257" />
+<xacro:leg prefix="3" legZAngle_rad="-2.513" />
+<xacro:leg prefix="4" legZAngle_rad="-3.77" />
+<xacro:leg prefix="5" legZAngle_rad="-5.027" />
+
+</robot>

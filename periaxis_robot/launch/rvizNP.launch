@@ -1,0 +1,8 @@
+<launch>    
+    <param name="robot_description" command="$(find xacro)/xacro '$(find periaxis_robot)/urdf/periaxis_robot.xacro'"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>  
+    <node name="rviz" pkg="rviz" type="rviz" args=" -d $(find periaxis_robot)/launch/config.rviz" />  
+
+
+    
+</launch>
