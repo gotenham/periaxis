@@ -10,18 +10,26 @@ The hand will use 5 fingers to hold and rotate a sphere (earth globe). To rotate
 Illustration of timing:
 ![StepSequence](https://github.com/gotenham/periaxis/assets/40827722/b899385a-a847-4438-a2d5-3e1a63a19e26)
 
-The ROS configuration will include seperate nodes for Gait Control (master clock), leg Inverse Kinematic Sovler, and Servo Driver SDK; the initial design for the ROS system is below:
+The ROS configuration will include seperate nodes for Gait Control (master clock), leg Inverse Kinematic Solver, and Servo Driver SDK; the initial design for the ROS system is below:
 
 ![image](https://github.com/gotenham/periaxis/assets/40827722/f7a554e9-8029-49e5-9ed4-75a6da031c31)
+
+ROS Topic Publisher Subscriber map:
+
+![Screenshot at 2022-06-18 16-14-02](https://github.com/gotenham/periaxis/assets/40827722/d247e2df-09df-400a-b23a-88ed1037ec13)
 
 A prototype was designed to better understand the inverse kinematics of the leg, each joint is asigned a frame of reference so matrix transformations can be constructed to convert coordinates them:
 
 ![Frames](https://github.com/gotenham/periaxis/assets/40827722/041c30cd-e3e1-4b0f-8732-6eeeae83a030)
 
-Finger reference geometry:
-
+Design of fingers and encapsulated servos:
 
 ![image](https://github.com/gotenham/periaxis/assets/40827722/18651be7-1fc8-48c1-aa5d-6af9307de450)
+
+![1](https://github.com/gotenham/periaxis/assets/40827722/e8a2576b-d650-44b3-b750-8a5e031b2957)
+![2](https://github.com/gotenham/periaxis/assets/40827722/73c55d32-d493-4b3f-ac67-9f070293c5bf)
+![3](https://github.com/gotenham/periaxis/assets/40827722/2ce5f90e-0ac6-454b-9213-3a62e1632cbb)
+
 
 ![image](https://github.com/gotenham/periaxis/assets/40827722/173ad446-b793-496c-aa71-93519072643e)
 
