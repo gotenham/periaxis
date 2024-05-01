@@ -2,7 +2,7 @@ Date: 1st May 2024
 Project: periaxis
 By: Ace Janssen-Rich
 
-####################################################################### Hardware #######################################################################
+############################################## Hardware ##############################################
   CERN Open Hardware Licence Version 2 - Permissive
   
   Preamble
@@ -202,7 +202,7 @@ By: Ace Janssen-Rich
         acting as such, and third party beneficiary rights are
         specifically excluded.
 
-####################################################################### SOFTWARE #######################################################################
+############################################## SOFTWARE ##############################################
                       GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
