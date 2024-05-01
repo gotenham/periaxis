@@ -3,7 +3,7 @@
 
 This is a personal project inspired by Mark Setrakian's work; I've been interested in doing another project using [ROS](https://www.ros.org/) for a while, and thought the inverse kinematics challenge of this sculpture sounded interesting to solve. Below is the design process I've taken to get to where the project currently sits:
 
-The name is a portmanteau of periapsis (the closest point to the earth in an orbit) and axis, as in spinning on an axis.
+The name is a portmanteau of periapsis (the closest point to the earth in an orbit) and axis (as in spinning on an axis).
 
 ## Design
 
