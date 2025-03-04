@@ -1,0 +1,9 @@
+uint8 id1
+uint8 id2
+uint8 id3
+uint16 position1
+uint16 position2
+uint16 position3
+bool arm1
+bool arm2
+bool arm3

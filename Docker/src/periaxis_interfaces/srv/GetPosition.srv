@@ -1,0 +1,12 @@
+# Request
+uint8 id1
+uint8 id2
+uint8 id3
+---
+# Response
+uint16 position1
+uint16 position2
+uint16 position3
+bool valid1
+bool valid2
+bool valid3

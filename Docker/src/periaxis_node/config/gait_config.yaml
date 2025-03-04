@@ -1,0 +1,10 @@
+gait_controller:
+  ros__parameters:
+    leg_count: 4  # Number of legs on the robot
+    publishRate_ms: 500  # ROS2 Publish timer interval in milliseconds
+    cyclePeriod_ms: 3500 # Period to complete one PUSH + STEP cycle
+    traceRadius_mm: 5 # Radius of function trace the legs follow
+    step_offsetFactor: 10 # Adjusts tip of the leg +Y and -Z axis offset from trace path during STEP portion of cycle, higher is larger step height
+    push_ratio: 0.6 # Ratio leg should be pushing vs stepping (eg (2/5) as 40% stepping, 60% pushing)
+    baseFrame_fnTrace_translationVect: [0.0, 0.0, 0.15] # Translation offset {x,y,z} in mm from base frame [+z up, +y pointing to leg 0] where the trace function is drawn
+    baseFrame_fnTrace_rotationQ: [0.1, 0.0, 0.0, 0.0] # Quarternion representation of rotation matrix component of trace function transform

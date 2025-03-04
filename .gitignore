@@ -1,0 +1,46 @@
+archive/
+**/archive/
+**/_*.txt
+*.xlsx
+*.sh
+*.mp4
+
+# ROS2 standard exclusions
+build/
+install/
+log/
+*.swp
+*.swo
+*.pyc
+__pycache__/
+*.rosinstall
+.vscode/
+/colcon_*
+/.catkin_workspace
+/devel/
+/bin/
+/msg_gen/
+/srv_gen/
+/msg/*.h
+/srv/*.h
+
+# Docker/build artifacts
+*.egg-info/
+*.so
+*.dll
+*.exe
+*.o
+*.a
+*.d
+*.dylib
+
+# Optional related to C++ projects
+*.class
+*.jar
+*.war
+*.ear
+*.db
+*.sqlite
+# Ignore generated docs
+*.dox
+*.wikidoc

@@ -1,0 +1,21 @@
+version: '3.8'
+
+# Container runtime instructions, executed every time the container is started
+services:
+  ros2:
+    # Build Docker container using Dockerfile definition
+    build:
+        context: .   # Build context (current working directory)
+        dockerfile: Dockerfile
+    volumes:
+      # Mount the local ROS project directory into the container to share source files
+      - ./src:/ros2_ws/src
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+    environment:
+      # Use the default RMW implementation
+      - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+    # Enable TTY for interactive terminal access, Keep stdin open for debugging inside container
+    command: /bin/bash
+    tty: true
+    stdin_open: true  # Keep stdin open for interactive mode

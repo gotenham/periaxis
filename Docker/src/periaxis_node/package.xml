@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package format="3">
+	<name>periaxis_node</name>
+	<version>0.2.0</version>
+	<description>Personal project to build a 5 legged robot to rotate a world globe; to apply my skills to a real life task and test what i have been learning in mathematics, robot kinematics, ROS, C++ and linux</description>
+	<maintainer email="ace.janssenr@gmail.com">ace.janssen</maintainer>
+	<license>MIT</license>
+	<author>ace.janssen</author>
+
+	<!-- Build tool for ROS 2 -->
+	<buildtool_depend>ament_cmake</buildtool_depend>
+	
+	<!-- ROS 2 dependencies -->
+	<depend>rclcpp</depend> <!-- ROS 2 C++ client library -->
+	<depend>sensor_msgs</depend> <!-- Standard message types, eg joint_state etc -->
+	<depend>geometry_msgs</depend> <!-- Standard message types, eg for Point, quarternion etc -->
+	<depend>periaxis_interfaces</depend> <!-- Custom periaxis msg, srv etc. interface types -->
+	<depend>dynamixel_sdk</depend> <!-- Dynamixel SDK package -->
+	<depend>eigen3</depend> <!-- dependant linear algebra library for periaxis_node -->
+	
+	<!-- ROS 2 launch functionality -->
+	<!-- <depend>launch</depend> -->
+	<!-- <depend>launch_ros</depend> -->
+	
+	<exec_depend>ros2launch</exec_depend>
+	
+	<export>
+		<!-- Tag as ROS 2 package via build system -->
+		<build_type>ament_cmake</build_type>
+	</export>
+</package>
