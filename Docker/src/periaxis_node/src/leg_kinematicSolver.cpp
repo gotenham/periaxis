@@ -44,7 +44,7 @@ class LegKinematics : public rclcpp::Node {
 			_leg_goal_coord_sub = this->create_subscription<periaxis_interfaces::msg::LegGoalCoord>( //ROS2
 				"periaxis_node/legGoalCoord", //topic
 				100, //msg sub queue
-				[this](const std::shared_ptr<periaxis_interfaces::msg::LegGoalCoord> msg) { //lamda funct handler for ROS 2 class member function call format
+				[this](const periaxis_interfaces::msg::LegGoalCoord::SharedPtr msg) { //lamda funct handler for ROS 2 class member function call format
 					this->invKinematicSolver(msg);  // Pass shared pointer directly
 				}
 			);
@@ -105,7 +105,7 @@ class LegKinematics : public rclcpp::Node {
             double theta1, theta2_1, theta2_2, theta3_1, theta3_2; //our calculated angles (in rad) for the three joints, note that theta2 & 3 have two solutions
 
             //TBD TEMP SETUP, eventualy pull these values from the ROS parameter server
-            const double base_radius = 7.5, L1 = 2.3, L2 = 9.5, L3 = 14.3; //leg link lengths in (cm)
+            const double base_radius = 75, L1 = 23, L2 = 95, L3 = 143; //leg link lengths in (mm)
             const short int ServoMIN_J1 = 204, ServoMAX_J1 = 820; //joint1 [base] servo numeric angle limits
             const short int ServoMIN_J2 = 181, ServoMAX_J2 = 757; //joint2 [mid] servo numeric angle limits
             const short int ServoMIN_J3 = 0, ServoMAX_J3 = 538; //joint3 [tip] servo numeric angle limits
@@ -214,8 +214,8 @@ class LegKinematics : public rclcpp::Node {
             theta3_1 = 2*atan(sqrt((- pow(F1_x, 2) - pow(F1_y, 2) + pow(L2, 2) + 2*L2*L3 + pow(L3, 2))*(pow(F1_x, 2) + pow(F1_y, 2) - pow(L2, 2) + 2*L2*L3 - pow(L3, 2)))/(pow(F1_x, 2) + pow(F1_y, 2) - pow(L2, 2) + 2*L2*L3 - pow(L3, 2)));
             theta3_2 = -2*atan(sqrt((- pow(F1_x, 2) - pow(F1_y, 2) + pow(L2, 2) + 2*L2*L3 + pow(L3, 2))*(pow(F1_x, 2) + pow(F1_y, 2) - pow(L2, 2) + 2*L2*L3 - pow(L3, 2)))/(pow(F1_x, 2) + pow(F1_y, 2) - pow(L2, 2) + 2*L2*L3 - pow(L3, 2)));
 
-            //Calculated angles are from the servo midway home position, ie 0deg is home and servo horn up;
-            // Joint1: negative angle is CW, positive is CCW; Joint2 & 3: positive angle is CW, negative is CCW;
+			// ?? Joint1: negative angle is CW, positive is CCW; Joint2 & 3: positive angle is CW, negative is CCW ??;
+			//Calculated angles are from the servo midway home position, ie 0deg is home and servo horn up;
             // the servo.position input is 0-1024 numeric which represents 0-300deg rotation; with 150deg (512 numeric) being servo horn midway home position;
             // the following maps between these different ranges:
             short int theta1_numeric   = (1024.0/300)*(theta1*xrad2deg + 150);

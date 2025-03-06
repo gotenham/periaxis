@@ -5,17 +5,16 @@ services:
   ros2:
     # Build Docker container using Dockerfile definition
     build:
-        context: .   # Build context (current working directory)
-        dockerfile: Dockerfile
+        context: .  # Use the Dockerfile in the current directory
+        dockerfile: Dockerfile # Explicitly specify Dockerfile name
     volumes:
       # Mount the local ROS project directory into the container to share source files
       - ./src:/ros2_ws/src
     devices:
-      - "/dev/ttyUSB0:/dev/ttyUSB0"
+      - "/dev/ttyUSB0:/dev/ttyUSB0" # Allow ROS 2 nodes to communicate via first USB port0
     environment:
-      # Use the default RMW implementation
-      - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
-    # Enable TTY for interactive terminal access, Keep stdin open for debugging inside container
-    command: /bin/bash
-    tty: true
-    stdin_open: true  # Keep stdin open for interactive mode
+      - RMW_IMPLEMENTATION=rmw_fastrtps_cpp # Set the default RMW middleware to FastRTPS
+    # Start container with an interactive bash shell
+    command: ["/bin/bash", "-c", "source /opt/ros/jazzy/setup.bash && exec bash"]
+    tty: true # Keep the terminal open for interactive debugging
+    stdin_open: true  # Allow input to the container (e.g., for `ros2 run`)

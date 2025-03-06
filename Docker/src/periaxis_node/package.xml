@@ -18,11 +18,12 @@
 	<depend>dynamixel_sdk</depend> <!-- Dynamixel SDK package -->
 	<depend>eigen3</depend> <!-- dependant linear algebra library for periaxis_node -->
 	
-	<!-- ROS 2 launch functionality -->
-	<!-- <depend>launch</depend> -->
-	<!-- <depend>launch_ros</depend> -->
-	
-	<exec_depend>ros2launch</exec_depend>
+	<exec_depend>robot_state_publisher</exec_depend> <!-- processes jointStates for rviz2 visualisation functionality -->
+	<exec_depend>xacro</exec_depend> <!-- interpret xacro robot model/description -->
+	<exec_depend>ros2launch</exec_depend> <!-- functionality to orchestration node config and launch -->
+
+	<test_depend>ament_lint_auto</test_depend>
+	<test_depend>ament_lint_common</test_depend>
 	
 	<export>
 		<!-- Tag as ROS 2 package via build system -->

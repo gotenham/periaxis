@@ -1,23 +1,23 @@
 # Dockerfile outlines the series of steps to build the Docker image, each step adds a layer to the generated image.
-# Use the ROS 2 Jazzy base image as foundation
+# Use the official ROS 2 Jazzy Jalisco base image as foundation
 FROM ros:jazzy-ros-base
 
 # Set the working directory inside the container
 WORKDIR /ros2_ws
 
-# Install dependencies and build tools
+# Install dependencies and development tools:
+    # Update to latest package list
+    # Install: Colcon build tools for ROS 2
+    # Install: Eigen3 library for linear algebra operations
+    # Clean up to reduce image size
 RUN apt-get update && apt-get install -y \
     python3-colcon-common-extensions \
+    libeigen3-dev \
     && rm -rf /var/lib/apt/lists/*
-#	ros-${ROS_DISTRO}-rviz2 \             # Optional: Visualization tool, include after python3-colcon-common-extensions above
 
-# Install Eigen linear algebra library to Docker
-RUN apt-get update && \
-    apt-get install -y ros-jazzy-eigen3-* && \
-    rm -rf /var/lib/apt/lists/*
-	
-# Source ROS 2 and build the workspace
-RUN /bin/bash -c "source /opt/ros/jazzy/setup.sh && colcon build --symlink-install"
+# Ensure the ROS 2 environment is sourced every time a shell starts
+RUN echo "source /opt/ros/jazzy/setup.bash" >> /etc/bash.bashrc
 
-# Set the container to run bash on startup with a sourced project environment by default
-CMD ["bash", "-c", "source /opt/ros/jazzy/setup.sh && source /ros2_ws/install/setup.bash && /bin/bash"]
+# Set up entrypoint to run an interactive bash shell by default
+ENTRYPOINT ["/bin/bash", "-c", "source /opt/ros/jazzy/setup.bash && exec bash"]
+#ENTRYPOINT ["/bin/bash"]
