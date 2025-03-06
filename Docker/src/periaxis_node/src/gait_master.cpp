@@ -60,7 +60,7 @@ LegController::LegController(
 		auto parent_node = _gaitMaster_node.lock();
 		if (parent_node) {
 			// ROS 2 log current leg config
-			RCLCPP_INFO(parent_node->get_logger(), "Leg [%d] sucessfully initialised to %s node.", legNum, parent_node->get_name());
+			RCLCPP_INFO(parent_node->get_logger(), "@LegController class constructor: Leg [%d] sucessfully initialised to %s node.", legNum, parent_node->get_name());
 		} else {
 			RCLCPP_ERROR(rclcpp::get_logger(PARENT_NODE_NAME), "@LegController class constructor: Failed to lock GaitMaster node pointer from leg [%d], pointer to parent Node is invalid!", _legNum);
 		}
@@ -210,7 +210,7 @@ GaitMaster::GaitMaster() : Node(PARENT_NODE_NAME),
 	_traceOffset_rot = Eigen::Matrix3d::Identity();
 
 	// Log node state to ROS2
-	RCLCPP_INFO(this->get_logger(), "Starting %s node. Node controls position and timing of legs by publishing leg goal coords on periaxis_node/legGoalCoord;", this->get_name());
+	RCLCPP_INFO(this->get_logger(), "@GaitMaster class constructor: Starting %s node. Node controls position and timing of legs by publishing leg goal coords on periaxis_node/legGoalCoord;", this->get_name());
 	
 	// Declare ROS 2 parameter references and init class instance variables to default values
 	//this->declare_parameter<int>("leg_count", 5);  // name, default
@@ -257,6 +257,9 @@ GaitMaster::GaitMaster() : Node(PARENT_NODE_NAME),
 
 // GaitMaster.PUBLIC: Call this AFTER the node is created so a valid std::make_shared<GaitMaster>() can be passed to legController instances
 void GaitMaster::initialiseLegInstances() {
+	//log class constructor complete
+	RCLCPP_INFO(this->get_logger(), "@initialiseLegInstances: %s initialising %d legs and %dms publish rate.", this->get_name(), _leg_count, _publishRate_ms);
+	
 	// Get shared_ptr from this class instance; cast to resolve ambiguity with inhereted rclcpp::Node and get a shared_ptr<GaitMaster>
 	auto gaitMaster_node_shared = std::static_pointer_cast<GaitMaster>(this->shared_from_this());
 	//zOffsetUnit is negative due leg numbers increment CW about Z [+Z up from legs common centre]
@@ -283,8 +286,6 @@ void GaitMaster::initialiseLegInstances() {
 			this->updateGaits();
 		}
 	);
-	//log class constructor complete
-	RCLCPP_INFO(this->get_logger(), "%s initialised with %d legs and %dms publish rate.", this->get_name(), _leg_count, _publishRate_ms);
 }
 
 // GaitMaster.PRIVATE: Timer driven publishing loop to generate goal coords for each leg
