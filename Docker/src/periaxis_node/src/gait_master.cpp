@@ -3,7 +3,7 @@
 #include "periaxis_node/gait_master.hpp"
 
 // ## PRIVATE GaitMaster CLASS VARIABLES ##
-// RANGE LIMITS FOR GAIT PARAMETERS
+// STATIC RANGE LIMITS FOR GAIT PARAMETERS
 const int GaitMaster::_cyclePeriod_millis_MIN = 1000;
 const int GaitMaster::_cyclePeriod_millis_MAX = 60000;
 const int GaitMaster::_traceRadius_MIN = 10;
@@ -191,7 +191,6 @@ GaitMaster::GaitMaster() : Node(PARENT_NODE_NAME),
 	_leg_count(5),
 	_traceSTART(0.5*M_PI - (1/_leg_count)*M_PI), // 90deg + half of each legs portion of the full 360deg circle
 	_traceEND(0.5*M_PI + (1/_leg_count)*M_PI) // 90deg - half of each legs portion of the full 360deg circle
-	
 	{ 
 	// Initialisation code...
 	
@@ -254,24 +253,29 @@ GaitMaster::GaitMaster() : Node(PARENT_NODE_NAME),
 		}
 	);
 
-	// Get shared_ptr from this class instance
-	auto gaitMaster_node_shared = this->shared_from_this();
-	
+}
+
+// GaitMaster.PUBLIC: Call this AFTER the node is created so a valid std::make_shared<GaitMaster>() can be passed to legController instances
+void GaitMaster::initialiseLegInstances() {
+	// Get shared_ptr from this class instance; cast to resolve ambiguity with inhereted rclcpp::Node and get a shared_ptr<GaitMaster>
+	auto gaitMaster_node_shared = std::static_pointer_cast<GaitMaster>(this->shared_from_this());
 	//zOffsetUnit is negative due leg numbers increment CW about Z [+Z up from legs common centre]
 	double zOffsetUnit = -(2*M_PI)/_leg_count; //(circle / number of legs)
-	
+
 	// Init child LegController instances; unique_ptr ensures ownership is managed by GaitMaster
 	for (int i = 0; i < _leg_count; ++i) {
-		// LegController(x, x, legNum, legZAngle_rad, legPhaseOffset_ratio, legPhaseOffset_count)
-		// _legControllers.emplace_back(std::make_unique<LegController>(gaitMaster_node_shared, _legGoalCoord_pub, _CLK_master,
-			// i+1, i*zOffsetUnit, 0.4, i));
+		// LegController(x, x, x, legNum, legZAngle_rad, legPhaseOffset_ratio, legPhaseOffset_count)
 		_legControllers.emplace_back(std::make_unique<LegController>(
-            std::static_pointer_cast<GaitMaster>(gaitMaster_node_shared),  // Cast to GaitMaster
-            _legGoalCoord_pub, _CLK_master,
-            i + 1, i * zOffsetUnit, 0.4, i)
-		);
+			gaitMaster_node_shared,
+			_legGoalCoord_pub,
+			_CLK_master,
+			i + 1,
+			i * zOffsetUnit,
+			0.4,
+			i
+		));
 	}
-
+	
 	// Timer to periodically trigger leg controller updates	
 	_publish_timer = this->create_wall_timer(
 		std::chrono::milliseconds(_publishRate_ms),

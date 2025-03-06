@@ -4,6 +4,7 @@ archive/
 *.xlsx
 *.sh
 *.mp4
+.gitignore
 
 # ROS2 standard exclusions
 build/

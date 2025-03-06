@@ -76,10 +76,13 @@
 	
 	
 // GaitMaster class inherits and represents the ROS2 Node gait_controller, class configures and manages a number of child instances of the LegController class for each leg of the robot
-	class GaitMaster : public rclcpp::Node { //, public std::enable_shared_from_this<GaitMaster> //also inherit from std::enable_shared_from_this<GaitMaster> to use get shared pointer durining init for LegController instances to reference
+	class GaitMaster : public rclcpp::Node { //, public std::enable_shared_from_this<GaitMaster> { // [NOTE enable_shared_from_this is already inhereted from rclcpp::Node] also inherit from std::enable_shared_from_this<GaitMaster> to use get shared pointer durining init for LegController instances to reference
 	public:
 		GaitMaster();
 
+		//Call this AFTER the node is created so a valid std::make_shared<GaitMaster>() can be passed to legController instances
+		void initialiseLegInstances();
+		
 		// ## GETTER FUNCTIONS to expose class instance private variables as read-only ##
 		inline int get_cyclePeriod_millis() const { return _cyclePeriod_millis; }
 		inline int get_traceRadius() const { return _traceRadius; }

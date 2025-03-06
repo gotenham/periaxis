@@ -7,7 +7,7 @@ int main(int argc, char** argv) {
 	rclcpp::init(argc, argv);
 	
 	auto gaitMaster = std::make_shared<GaitMaster>();
-	
+	gaitMaster->initialiseLegInstances(); // Critical: Call after construction!
 	// Create class instance as node and spin
     rclcpp::spin(gaitMaster);
 	
